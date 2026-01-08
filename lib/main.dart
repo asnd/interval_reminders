@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:interval_reminders/services/notification_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Entry point
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Notification initialization would go here in a real deployment
-  // await NotificationService.initialize();
+  // Notification initialization
+  await NotificationService().initialize();
 
   runApp(
     MultiProvider(
@@ -110,6 +111,9 @@ class TimerService extends ChangeNotifier {
 
   void start() {
     if (_state == TimerState.running) return;
+
+    NotificationService().requestPermissions();
+
     _state = TimerState.running;
     notifyListeners();
 
@@ -149,9 +153,15 @@ class TimerService extends ChangeNotifier {
         ? IntervalType.rest
         : IntervalType.work;
 
-    // Send Notification (Simulated)
+    // Send Notification
     debugPrint(
         "Interval Finished! Switching to ${_currentType.name.toUpperCase()}");
+
+    NotificationService().showNotification(
+      id: 0,
+      title: 'Interval Finished!',
+      body: "Time to ${_currentType == IntervalType.work ? 'Focus' : 'Rest'}",
+    );
 
     _resetTimer();
 
