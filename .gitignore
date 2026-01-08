@@ -1,0 +1,46 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Visual Studio Code
+.vscode/
+
+# Flutter/Dart/Pub
+.dart_tool/
+.packages
+.pub/
+build/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/app.flx
+ios/Flutter/app.zip
+ios/Flutter/fonts/
+ios/Flutter/App.framework/
+ios/Flutter/Flutter.framework/
+
+# Android Studio
+*.jks
+*.keystore
+*.mobileprovision
+*.stackdump
+
+# Android
+android/local.properties
+android/gradle/
+android/gradlew
+android/gradlew.bat
+android/.gradle/
