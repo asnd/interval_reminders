@@ -150,7 +150,7 @@ class TimerService extends ChangeNotifier {
         : IntervalType.work;
 
     // Send Notification (Simulated)
-    print("Interval Finished! Switching to ${_currentType.name.toUpperCase()}");
+    debugPrint("Interval Finished! Switching to ${_currentType.name.toUpperCase()}");
 
     _resetTimer();
 
@@ -216,7 +216,7 @@ class HomePage extends StatelessWidget {
                   child: CircularProgressIndicator(
                     value: timer.progress,
                     strokeWidth: 20,
-                    backgroundColor: color.withOpacity(0.2),
+                    backgroundColor: color.withAlpha(51),
                     color: color,
                     strokeCap: StrokeCap.round,
                   ),
