@@ -203,123 +203,126 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
 
-            // Timer Display
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: CircularProgressIndicator(
-                    value: timer.progress,
-                    strokeWidth: 20,
-                    backgroundColor: color.withAlpha(51),
-                    color: color,
-                    strokeCap: StrokeCap.round,
-                  ),
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      isWork ? "FOCUS" : "REST",
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: color,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 2,
-                              ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      timer.timerString,
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                        fontWeight: FontWeight.w300,
-                        fontFeatures: [const FontFeature.tabularFigures()],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-
-            const Spacer(),
-
-            // Controls
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (timer.state != TimerState.running)
-                  FloatingActionButton.large(
-                    onPressed: timer.start,
-                    backgroundColor: color,
-                    foregroundColor: Colors.white,
-                    child: const Icon(Icons.play_arrow),
-                  )
-                else
-                  FloatingActionButton.large(
-                    onPressed: timer.pause,
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    child: const Icon(Icons.pause),
-                  ),
-                const SizedBox(width: 20),
-                FloatingActionButton(
-                  onPressed: timer.reset,
-                  mini: true,
-                  heroTag: "reset",
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
-                  child: const Icon(Icons.refresh),
-                ),
-                const SizedBox(width: 20),
-                FloatingActionButton(
-                  onPressed: timer.skip,
-                  mini: true,
-                  heroTag: "skip",
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
-                  child: const Icon(Icons.skip_next),
-                ),
-              ],
-            ),
-
-            const Spacer(),
-
-            // Settings Sheet
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainer,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(32)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              // Timer Display
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  Text("Interval Settings",
-                      style: Theme.of(context).textTheme.titleLarge),
-                  const SizedBox(height: 20),
-                  _buildSlider(context,
-                      label: "Action (min)",
-                      value: timer.workDuration,
-                      min: 10,
-                      max: 120,
-                      onChanged: (v) => timer.setWorkDuration(v.toInt())),
-                  const SizedBox(height: 10),
-                  _buildSlider(context,
-                      label: "Rest (min)",
-                      value: timer.restDuration,
-                      min: 5,
-                      max: 180,
-                      onChanged: (v) => timer.setRestDuration(v.toInt())),
+                  SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: CircularProgressIndicator(
+                      value: timer.progress,
+                      strokeWidth: 20,
+                      backgroundColor: color.withAlpha(51),
+                      color: color,
+                      strokeCap: StrokeCap.round,
+                    ),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        isWork ? "FOCUS" : "REST",
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  color: color,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        timer.timerString,
+                        style:
+                            Theme.of(context).textTheme.displayLarge?.copyWith(
+                          fontWeight: FontWeight.w300,
+                          fontFeatures: [const FontFeature.tabularFigures()],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            ),
-          ],
+
+              const SizedBox(height: 40),
+
+              // Controls
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (timer.state != TimerState.running)
+                    FloatingActionButton.large(
+                      onPressed: timer.start,
+                      backgroundColor: color,
+                      foregroundColor: Colors.white,
+                      child: const Icon(Icons.play_arrow),
+                    )
+                  else
+                    FloatingActionButton.large(
+                      onPressed: timer.pause,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      child: const Icon(Icons.pause),
+                    ),
+                  const SizedBox(width: 20),
+                  FloatingActionButton(
+                    onPressed: timer.reset,
+                    mini: true,
+                    heroTag: "reset",
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: const Icon(Icons.refresh),
+                  ),
+                  const SizedBox(width: 20),
+                  FloatingActionButton(
+                    onPressed: timer.skip,
+                    mini: true,
+                    heroTag: "skip",
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: const Icon(Icons.skip_next),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 40),
+
+              // Settings Sheet
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(32)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Interval Settings",
+                        style: Theme.of(context).textTheme.titleLarge),
+                    const SizedBox(height: 20),
+                    _buildSlider(context,
+                        label: "Action (min)",
+                        value: timer.workDuration,
+                        min: 10,
+                        max: 120,
+                        onChanged: (v) => timer.setWorkDuration(v.toInt())),
+                    const SizedBox(height: 10),
+                    _buildSlider(context,
+                        label: "Rest (min)",
+                        value: timer.restDuration,
+                        min: 5,
+                        max: 180,
+                        onChanged: (v) => timer.setRestDuration(v.toInt())),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
