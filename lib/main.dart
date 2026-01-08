@@ -150,7 +150,8 @@ class TimerService extends ChangeNotifier {
         : IntervalType.work;
 
     // Send Notification (Simulated)
-    debugPrint("Interval Finished! Switching to ${_currentType.name.toUpperCase()}");
+    debugPrint(
+        "Interval Finished! Switching to ${_currentType.name.toUpperCase()}");
 
     _resetTimer();
 
