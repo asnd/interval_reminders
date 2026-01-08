@@ -11,8 +11,8 @@ import 'package:permission_handler/permission_handler.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Notification initialization would go here in a real deployment
-  // await NotificationService.initialize(); 
-  
+  // await NotificationService.initialize();
+
   runApp(
     MultiProvider(
       providers: [
@@ -53,11 +53,12 @@ class IntervalApp extends StatelessWidget {
 }
 
 enum TimerState { idle, running, paused }
+
 enum IntervalType { work, rest }
 
 class TimerService extends ChangeNotifier {
   // Configuration (minutes)
-  int _workDuration = 45; 
+  int _workDuration = 45;
   int _restDuration = 15;
 
   // State
@@ -76,9 +77,11 @@ class TimerService extends ChangeNotifier {
   TimerState get state => _state;
   IntervalType get currentType => _currentType;
   int get secondsRemaining => _secondsRemaining;
-  
+
   double get progress {
-    int total = (_currentType == IntervalType.work ? _workDuration : _restDuration) * 60;
+    int total =
+        (_currentType == IntervalType.work ? _workDuration : _restDuration) *
+            60;
     if (total == 0) return 0;
     return 1.0 - (_secondsRemaining / total);
   }
@@ -112,7 +115,7 @@ class TimerService extends ChangeNotifier {
     if (_state == TimerState.running) return;
     _state = TimerState.running;
     notifyListeners();
-    
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_secondsRemaining > 0) {
         _secondsRemaining--;
@@ -143,24 +146,28 @@ class TimerService extends ChangeNotifier {
 
   void _switchInterval() {
     _timer?.cancel();
-    
+
     // Toggle type
-    _currentType = _currentType == IntervalType.work ? IntervalType.rest : IntervalType.work;
-    
+    _currentType = _currentType == IntervalType.work
+        ? IntervalType.rest
+        : IntervalType.work;
+
     // Send Notification (Simulated)
     print("Interval Finished! Switching to ${_currentType.name.toUpperCase()}");
-    
+
     _resetTimer();
-    
+
     // Auto-start next interval? Usually safer to wait for user, but for reminders we might want continuous.
     // Let's pause and notify for now.
     _state = TimerState.paused; // Or running if we want continuous
     // For this app, let's keep running to ensure we push the user.
-    start(); 
+    start();
   }
 
   void _resetTimer() {
-    _secondsRemaining = (_currentType == IntervalType.work ? _workDuration : _restDuration) * 60;
+    _secondsRemaining =
+        (_currentType == IntervalType.work ? _workDuration : _restDuration) *
+            60;
   }
 
   // Persistence
@@ -188,7 +195,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final timer = context.watch<TimerService>();
     final isWork = timer.currentType == IntervalType.work;
-    final color = isWork ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary;
+    final color = isWork
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.tertiary;
 
     return Scaffold(
       appBar: AppBar(
@@ -199,7 +208,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             const Spacer(),
-            
+
             // Timer Display
             Stack(
               alignment: Alignment.center,
@@ -220,11 +229,12 @@ class HomePage extends StatelessWidget {
                   children: [
                     Text(
                       isWork ? "FOCUS" : "REST",
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: color,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                color: color,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                              ),
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -258,24 +268,22 @@ class HomePage extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     child: const Icon(Icons.pause),
                   ),
-                  
                 const SizedBox(width: 20),
-                
                 FloatingActionButton(
                   onPressed: timer.reset,
                   mini: true,
                   heroTag: "reset",
-                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   child: const Icon(Icons.refresh),
                 ),
-                
-                 const SizedBox(width: 20),
-
-                 FloatingActionButton(
+                const SizedBox(width: 20),
+                FloatingActionButton(
                   onPressed: timer.skip,
                   mini: true,
                   heroTag: "skip",
-                   backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
                   child: const Icon(Icons.skip_next),
                 ),
               ],
@@ -288,31 +296,28 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainer,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(32)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Interval Settings", style: Theme.of(context).textTheme.titleLarge),
+                  Text("Interval Settings",
+                      style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 20),
-                  
-                  _buildSlider(
-                    context, 
-                    label: "Action (min)", 
-                    value: timer.workDuration, 
-                    min: 10, max: 120, 
-                    onChanged: (v) => timer.setWorkDuration(v.toInt())
-                  ),
-                  
+                  _buildSlider(context,
+                      label: "Action (min)",
+                      value: timer.workDuration,
+                      min: 10,
+                      max: 120,
+                      onChanged: (v) => timer.setWorkDuration(v.toInt())),
                   const SizedBox(height: 10),
-                  
-                  _buildSlider(
-                    context, 
-                    label: "Rest (min)", 
-                    value: timer.restDuration, 
-                    min: 5, max: 180, 
-                    onChanged: (v) => timer.setRestDuration(v.toInt())
-                  ),
+                  _buildSlider(context,
+                      label: "Rest (min)",
+                      value: timer.restDuration,
+                      min: 5,
+                      max: 180,
+                      onChanged: (v) => timer.setRestDuration(v.toInt())),
                 ],
               ),
             ),
@@ -322,13 +327,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildSlider(BuildContext context, {
-    required String label, 
-    required int value, 
-    required double min, 
-    required double max, 
-    required ValueChanged<double> onChanged
-  }) {
+  Widget _buildSlider(BuildContext context,
+      {required String label,
+      required int value,
+      required double min,
+      required double max,
+      required ValueChanged<double> onChanged}) {
     return Column(
       children: [
         Row(
